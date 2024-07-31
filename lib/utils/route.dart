@@ -6,22 +6,17 @@ import 'package:news/ui/splash_screen.dart';
 
 import '../ui/home_screen.dart';
 
-dynamic sendRoute(BuildContext context, RoutesName routeName){
+dynamic sendRoute(BuildContext context, RoutesName routeName,{bool isreplace = false,
+bool clearstack = false,
+Function? onrefresh,
+Map<String, dynamic>? data}){
   switch(routeName){
-    case RoutesName.splash:
-      const SplashScreen();
-      break;
-    case RoutesName.homeScreen:
-      sendActivity(context, MultiBlocProvider(
-          providers: [
-            BlocProvider<NewsModelBloc>(create: (context) => NewsModelBloc(repository: NewsModelRepositoryImpl()),)
-          ],
-          child: const HomeScreen()));
-      break;
-
     case RoutesName.detailsScreen:
       sendActivity(context, const DetailsScreen());
       break;
+
+    default:
+      Text("No Page Found");
 
   }
 }

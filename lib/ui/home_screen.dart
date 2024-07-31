@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news/bloc/news_bloc.dart';
-import 'package:news/model/news_model.dart' as NewsViewModel ;
+import 'package:news/model/news_model.dart' ;
 import 'package:news/ui/details_screen.dart';
 
 import '../Utils/strings.dart';
@@ -19,10 +19,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController editingController = TextEditingController();
   LoadingDialog? pr;
-  NewsViewModel.NewsViewModel? newsViewModel;
+  NewsViewModel? newsViewModel;
   NewsModelBloc? newsModelBloc;
-
-  List<NewsViewModel.Articles> listOfNews =  List.empty(growable: true);
 
   @override
   void initState() {
@@ -47,14 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
   initView(){
     newsModelBloc = BlocProvider.of<NewsModelBloc>(context);
     newsModelBloc!.add(FetchNewsModelsEvent());
-    listOfNews  = newsViewModel!.articles!;
   }
 
-  void filterSearchResult(String query){
-    setState(() {
-      listOfNews = newsViewModel!.articles!.where((item) => item.author!.toLowerCase().contains(query.toLowerCase()),).toList();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
-                  controller: editingController,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10.w)
-                  ),
-                  onChanged: (value) => filterSearchResult(value),
-                ),
-                spaceHeight(10.h),
+
                 newsViewModel != null ?
                     Expanded(
                       child: ListView.builder(
