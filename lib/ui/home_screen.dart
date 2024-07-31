@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news/bloc/news_bloc.dart';
-import 'package:news/model/news_model.dart';
+import 'package:news/model/news_model.dart' as NewsViewModel ;
 import 'package:news/ui/details_screen.dart';
 
 import '../Utils/strings.dart';
@@ -17,9 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController editingController = TextEditingController();
   LoadingDialog? pr;
-  NewsViewModel? newsViewModel;
+  NewsViewModel.NewsViewModel? newsViewModel;
   NewsModelBloc? newsModelBloc;
+
+  List<NewsViewModel.Articles> listOfNews =  List.empty(growable: true);
 
   @override
   void initState() {
@@ -44,6 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
   initView(){
     newsModelBloc = BlocProvider.of<NewsModelBloc>(context);
     newsModelBloc!.add(FetchNewsModelsEvent());
+    listOfNews  = newsViewModel!.articles!;
+  }
+
+  void filterSearchResult(String query){
+    setState(() {
+      listOfNews = newsViewModel!.articles!.where((item) => item.author!.toLowerCase().contains(query.toLowerCase()),).toList();
+    });
   }
 
   @override
@@ -95,56 +105,68 @@ class _HomeScreenState extends State<HomeScreen> {
             title: CustomTextWidget("Today's News",size_txt: 16.sp,),
             automaticallyImplyLeading: false,
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              newsViewModel != null ? 
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: newsViewModel!.articles!.length,
-                      padding: EdgeInsets.all(8.w),
-                      itemBuilder: (context, index) {
-                        var listData = newsViewModel!.articles![index];
-                        return InkWell(
-                          borderRadius: BorderRadius.circular(8.r),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsScreen(flag: listData,),));
-                          },
-                          child: Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                              side: BorderSide(color: const Color(0xffD90429).withOpacity(0.4))
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 10.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
-                                      Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      CustomTextWidget("Title: ", size_txt: 10.sp, color_txt: Colors.blueGrey,),
-                                      Expanded(child: CustomTextWidget(listData.title, size_txt: 10.sp, color_txt: Colors.grey,))
-                                    ],
-                                  ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: editingController,
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10.w)
+                  ),
+                  onChanged: (value) => filterSearchResult(value),
+                ),
+                spaceHeight(10.h),
+                newsViewModel != null ?
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: newsViewModel!.articles!.length,
 
-                                ],
+                        itemBuilder: (context, index) {
+                          var listData = newsViewModel!.articles![index];
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(8.r),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsScreen(flag: listData,),));
+                            },
+                            child: Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                                side: BorderSide(color: const Color(0xffD90429).withOpacity(0.4))
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 10.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
+                                        Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        CustomTextWidget("Title: ", size_txt: 10.sp, color_txt: Colors.blueGrey,),
+                                        Expanded(child: CustomTextWidget(listData.title, size_txt: 10.sp, color_txt: Colors.grey,))
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                  : Container(),
-            ],
+                          );
+                        },
+                      ),
+                    )
+                    : Container(),
+              ],
+            ),
           ),
         ));
   }
