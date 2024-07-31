@@ -21,8 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   news_model_bean.NewsViewModel? newsViewModel;
   NewsModelBloc? newsModelBloc;
 
-  List<String> itemData = List.empty(growable: true);
   List<String> listOfAnchor = List.empty(growable: true);
+  List<String> itemData = List.empty(growable: true);
+
+
 
 
   @override
@@ -52,14 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void filterItem(String query){
     setState(() {
-      listOfAnchor = itemData.where((element) => element.toLowerCase().contains(query.toLowerCase()),).toList();
+      listOfAnchor = itemData.where((author)=>author.toLowerCase().contains(query.toLowerCase())).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     print(listOfAnchor);
-    return MultiBlocListener(
+    return MultiBlocListener( 
         listeners: [
           BlocListener<NewsModelBloc, NewsModelState>(
             listener: (context, state) async {
@@ -137,7 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: newsViewModel!.articles!.length,
-
                     itemBuilder: (context, index) {
                       var listData = newsViewModel!.articles![index];
                       return InkWell(
@@ -156,10 +157,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
-                                    Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
+                                          Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(onPressed: (){}, icon: Icon(Icons.bookmark_border))
                                   ],
                                 ),
                                 Row(
