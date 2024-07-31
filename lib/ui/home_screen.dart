@@ -21,7 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   news_model_bean.NewsViewModel? newsViewModel;
   NewsModelBloc? newsModelBloc;
 
-  List<news_model_bean.Articles>? listOfAnchor = List.empty(growable: true);
+  List<String> itemData = List.empty(growable: true);
+  List<String> listOfAnchor = List.empty(growable: true);
+
 
   @override
   void initState() {
@@ -50,12 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void filterItem(String query){
     setState(() {
-      listOfAnchor = newsViewModel!.articles!.where((item) => item.author!.toLowerCase().contains(query.toLowerCase())).toList();
+      listOfAnchor = itemData.where((element) => element.toLowerCase().contains(query.toLowerCase()),).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(listOfAnchor);
     return MultiBlocListener(
         listeners: [
           BlocListener<NewsModelBloc, NewsModelState>(
@@ -92,10 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
               else if (state is NewsModelLoadedState) {
                 pr!.dismiss();
                 newsViewModel = state.NewsModels;
-                if(newsViewModel != null && newsViewModel!.articles != null) {
-                  listOfAnchor = newsViewModel!.articles;
+                for(var i = 0 ; i < newsViewModel!.articles!.length; i++){
+                  itemData.add(newsViewModel!.articles![i].author.toString());
                 }
-                print(listOfAnchor);
                 setState(() {});
 
               }
@@ -104,8 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
-            title: CustomTextWidget("Today's News",size_txt: 16.sp,),
+            backgroundColor: Colors.black,
+            title: CustomTextWidget("Today's News",size_txt: 16.sp,color_txt: Colors.white,),
             automaticallyImplyLeading: false,
+            actions: [
+              IconButton(onPressed: (){}, icon: const Icon(Icons.bookmark_border,color: Colors.white,))
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -122,7 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 8.w)
                   ),
                   controller: editingController,
-                  onChanged: (value) => filterItem(value),
+                  onChanged: (value) {
+                    filterItem(value);
+                    print(value);
+                  },
                 ),
                 spaceHeight(10.h),
                 Expanded(
