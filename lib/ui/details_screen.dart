@@ -27,82 +27,84 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-
-            Container(
-              padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all()
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomTextWidget(userData.title, isbold: true, size_txt: 14.sp,max_lines: 2,),
-                  spaceHeight(10.h),
-                  CustomTextWidget(userData.content, size_txt: 12.sp,max_lines: 20,),
-                  spaceHeight(10.h),
-                  CustomTextWidget(userData.description, size_txt: 12.sp,max_lines: 20,),
-                  spaceHeight(10.h),
-                  ClipRRect(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+        
+              Container(
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.r),
-                    child: Image.network(userData.urlToImage.toString()),
-                  ),
-                  spaceHeight(10.h),
-                  Row(
-                    children: [
-                      Text(
-                        "Published At: ",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                      spaceWidth(10.w),
-
-                      CustomTextWidget(userData.publishedAt, size_txt: 12.sp,max_lines: 20, ),
-                    ],
-                  ),
-                  spaceHeight(10.h),
-                  Row(
-                    children: [
-                      Text(
-                        "Redirect to Site: ",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                      spaceWidth(10.w),
-
-                      InkWell(
-                        onTap: (){
-                          openLinks(userData.url);
-                        },
-                        child: Text(
-                          "Click Here",
+                    border: Border.all()
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextWidget(userData.title, isbold: true, size_txt: 14.sp,max_lines: 2,),
+                    spaceHeight(10.h),
+                    CustomTextWidget(userData.content, size_txt: 12.sp,max_lines: 20,),
+                    spaceHeight(10.h),
+                    CustomTextWidget(userData.description, size_txt: 12.sp,max_lines: 20,),
+                    spaceHeight(10.h),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(userData.urlToImage.toString()),
+                    ),
+                    spaceHeight(10.h),
+                    Row(
+                      children: [
+                        Text(
+                          "Published At: ",
                           style: TextStyle(
                               fontSize: 12.sp,
                               fontStyle: FontStyle.italic,
-                              color: Colors.blue.shade800,
+                              color: Colors.grey,
                               fontWeight: FontWeight.w500
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        spaceWidth(10.w),
+        
+                        CustomTextWidget(userData.publishedAt, size_txt: 12.sp,max_lines: 20, ),
+                      ],
+                    ),
+                    spaceHeight(10.h),
+                    Row(
+                      children: [
+                        Text(
+                          "Redirect to Site: ",
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                        spaceWidth(10.w),
+        
+                        InkWell(
+                          onTap: (){
+                            openLinks(userData.url);
+                          },
+                          child: Text(
+                            "Click Here",
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.blue.shade800,
+                                fontWeight: FontWeight.w500
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

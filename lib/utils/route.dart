@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/bloc/news_bloc.dart';
 import 'package:news/ui/details_screen.dart';
-import 'package:news/ui/splash_screen.dart';
-
-import '../ui/home_screen.dart';
 
 dynamic sendRoute(BuildContext context, RoutesName routeName,{bool isreplace = false,
 bool clearstack = false,

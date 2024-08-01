@@ -17,7 +17,7 @@ class NewsModelBloc extends Bloc<NewsModelEvent, NewsModelState> {
         NewsViewModel newsModels =
         await repository.getNewsModel();
         if (newsModels.status == "ok") {
-            emit(NewsModelLoadedState(NewsModels: newsModels));
+            emit(NewsModelLoadedState(newsModels: newsModels));
         }else {
           emit(NewsModelErrorState(message: AppConstants.noDataError));
         }
@@ -54,13 +54,13 @@ class NewsModelLoadingState extends NewsModelState {
 }
 
 class NewsModelLoadedState extends NewsModelState {
-  final NewsViewModel NewsModels;
+  final NewsViewModel newsModels;
 
-  NewsModelLoadedState({required this.NewsModels});
+  NewsModelLoadedState({required this.newsModels});
 
   @override
   // TODO: implement props
-  List<Object> get props => [NewsModels];
+  List<Object> get props => [newsModels];
 }
 
 class NewsModelErrorState extends NewsModelState {

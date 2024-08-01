@@ -13,13 +13,13 @@ class NewsViewModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = <String, dynamic>{};
-    _data["status"] = status;
-    _data["totalResults"] = totalResults;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["status"] = status;
+    data["totalResults"] = totalResults;
     if(articles != null) {
-      _data["articles"] = articles?.map((e) => e.toJson()).toList();
+      data["articles"] = articles?.map((e) => e.toJson()).toList();
     }
-    return _data;
+    return data;
   }
 }
 
@@ -47,18 +47,18 @@ class Articles {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if(source != null) {
-      _data["source"] = source?.toJson();
+      data["source"] = source?.toJson();
     }
-    _data["author"] = author;
-    _data["title"] = title;
-    _data["description"] = description;
-    _data["url"] = url;
-    _data["urlToImage"] = urlToImage;
-    _data["publishedAt"] = publishedAt;
-    _data["content"] = content;
-    return _data;
+    data["author"] = author;
+    data["title"] = title;
+    data["description"] = description;
+    data["url"] = url;
+    data["urlToImage"] = urlToImage;
+    data["publishedAt"] = publishedAt;
+    data["content"] = content;
+    return data;
   }
 }
 
@@ -74,9 +74,9 @@ class Source {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = <String, dynamic>{};
-    _data["id"] = id;
-    _data["name"] = name;
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["name"] = name;
+    return data;
   }
 }

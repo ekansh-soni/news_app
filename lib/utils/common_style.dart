@@ -228,7 +228,6 @@ class CustomTextWidget extends StatelessWidget {
   final int? _maxlines;
   final TextAlign? _textAlign;
   final double? _linespace;
-  final String? _fontfamily;
   final bool _isbold;
   final bool _issemibold;
   final TextOverflow _textOverflow;
@@ -251,7 +250,6 @@ class CustomTextWidget extends StatelessWidget {
         this._maxlines = max_lines,
         this._textAlign = textAlign,
         this._linespace = line_space,
-        this._fontfamily = font_family,
         this._isbold = isbold,
         this._issemibold = issemibold,
         this._textOverflow = textOverflow,

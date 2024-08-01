@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../Utils/strings.dart';
-import 'api_exception.dart';
 
 class ApiService {
   static final _options = BaseOptions(
     baseUrl: AppConstants.baseUrl,
     connectTimeout:  const Duration(milliseconds: AppConstants.connectionTimeout),
-    receiveTimeout: Duration(milliseconds: AppConstants.receiveTimeout),
+    receiveTimeout: const Duration(milliseconds: AppConstants.receiveTimeout),
     responseType: ResponseType.json,
   );
 

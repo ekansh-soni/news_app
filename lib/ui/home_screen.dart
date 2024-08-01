@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,8 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void filterItem(String query){
     setState(() {
-      print("fiodgudjg8dugrt8:${jsonEncode(itemData)}");
-
       listOfAnchor = itemData.where((author)=>author.author!.toLowerCase().contains(query.toLowerCase())).toList();
     });
   }
@@ -103,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               else if (state is NewsModelLoadedState) {
                 pr!.dismiss();
-                newsViewModel = state.NewsModels;
+                newsViewModel = state.newsModels;
                 itemData = newsViewModel!.articles??[];
                 listOfAnchor=itemData;
                 setState(() {});
@@ -116,9 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.black,
             title: CustomTextWidget("Today's News",size_txt: 16.sp,color_txt: Colors.white,),
             automaticallyImplyLeading: false,
-            actions: [
-              IconButton(onPressed: (){}, icon: const Icon(Icons.bookmark_border,color: Colors.white,))
-            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -137,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: editingController,
                   onChanged: (value) {
                     filterItem(value);
-                    print(value);
                   },
                 ),
                 spaceHeight(10.h),
@@ -162,17 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
-                                          Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
-                                        ],
-                                      ),
-                                    ),
-                                    IconButton(onPressed: (){}, icon: Icon(Icons.bookmark_border))
+                                    CustomTextWidget("Author: ", size_txt: 12.sp, isbold: true,),
+                                    Expanded(child: CustomTextWidget(listData.author, size_txt: 12.sp, isbold: true,))
                                   ],
                                 ),
                                 Row(
