@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,7 @@ import 'package:news/bloc/news_bloc.dart';
 import 'package:news/model/news_model.dart' as news_model_bean ;
 import 'package:news/ui/details_screen.dart';
 import '../Utils/strings.dart';
+import '../model/news_model.dart';
 import '../utils/common_style.dart';
 import '../utils/route.dart';
 
@@ -21,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   news_model_bean.NewsViewModel? newsViewModel;
   NewsModelBloc? newsModelBloc;
 
-  List<String> listOfAnchor = List.empty(growable: true);
-  List<String> itemData = List.empty(growable: true);
+  List<Articles> listOfAnchor = List.empty(growable: true);
+  List<Articles> itemData = List.empty(growable: true);
 
 
 
@@ -45,22 +48,26 @@ class _HomeScreenState extends State<HomeScreen> {
           size_txt: 12.sp,
         ));
     initView();
+
   }
 
   initView(){
     newsModelBloc = BlocProvider.of<NewsModelBloc>(context);
     newsModelBloc!.add(FetchNewsModelsEvent());
+
   }
 
   void filterItem(String query){
     setState(() {
-      listOfAnchor = itemData.where((author)=>author.toLowerCase().contains(query.toLowerCase())).toList();
+      print("fiodgudjg8dugrt8:${jsonEncode(itemData)}");
+
+      listOfAnchor = itemData.where((author)=>author.author!.toLowerCase().contains(query.toLowerCase())).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(listOfAnchor);
+
     return MultiBlocListener( 
         listeners: [
           BlocListener<NewsModelBloc, NewsModelState>(
@@ -97,11 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
               else if (state is NewsModelLoadedState) {
                 pr!.dismiss();
                 newsViewModel = state.NewsModels;
-                for(var i = 0 ; i < newsViewModel!.articles!.length; i++){
-                  itemData.add(newsViewModel!.articles![i].author.toString());
-                }
+                itemData = newsViewModel!.articles??[];
+                listOfAnchor=itemData;
                 setState(() {});
-
               }
             },
           ),
@@ -138,9 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 spaceHeight(10.h),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: newsViewModel!.articles!.length,
+                    itemCount:listOfAnchor.length ,
                     itemBuilder: (context, index) {
-                      var listData = newsViewModel!.articles![index];
+                      var listData =listOfAnchor[index] ;
                       return InkWell(
                         borderRadius: BorderRadius.circular(8.r),
                         onTap: (){
